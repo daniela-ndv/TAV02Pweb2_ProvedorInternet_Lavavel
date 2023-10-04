@@ -5,26 +5,26 @@
     <h3>Listagem de Planos</h3> <br>
     <div>
         <div>
-            <form action="{{ route('plano.search') }}" method="post">
-                @csrf
-                <p>Filtrar por: </p>
-                <select name="filtro">
-                    <option value="nome">Nome</option>
-                    <option value="tipo">Tipo</option>
-                    <option value="download">Taxa Download</option>
-                    <option value="upload">Taxa Upload</option>
-                    <option value="valor">Valor</option>
-                </select>
-                <input type="text">
-                    <button type="submit">
-                        Buscar
-                    </button>
-                    <a href="{{route('plano.index')}}">
-                        <button type="button">
-                        Limpar
-                        </button>
-                    </a>
-            </form>
+        <form action="{{ route('plano.search') }}" method="post">
+          @csrf
+          <p>Filtrar por: </p>
+          <select name="tipo">
+            <option value="nome">Nome</option>
+            <option value="tipo">Tipo</option>
+            <option value="download">Taxa Download</option>
+            <option value="upload">Taxa Upload</option>
+            <option value="valor">Valor</option>
+          </select>
+          <input type="text" name="valor">
+            <button type="submit"> 
+               Buscar
+            </button>
+            <a href="{{route('plano.index')}}">
+              <button type="button">
+                Limpar
+              </button>
+            </a>
+        </form>
         </div>
         <div>
             <div>
@@ -64,17 +64,16 @@
                     <td>{{$item->upload}}</td>
                     <td>{{$item->valor}}</td>
                     <td>
-                        <a href="{{route('plano.edit', $item->id)}}">
-                            <button
-                            type="button">
-                                Editar
-                            </button>
-                        </a>
-                        <a href="{{route('plano.destroy', $item->id)}}">
-                            <button onclick="return confirm('Deseja excluir o registro?')">
-                                Deletar
-                            </button>
-                        </a>
+                      <a href="{{route('plano.edit', $item->id)}}">
+                        <button type="button">
+                          Editar
+                        </button>
+                      </a>
+                      <a href="{{route('plano.destroy', $item->id)}}">
+                        <button onclick="return confirm('Deseja excluir o registro?')">
+                          Deletar
+                        </button>
+                      </a>
                     </td>
                   </tr>
                 </tbody>

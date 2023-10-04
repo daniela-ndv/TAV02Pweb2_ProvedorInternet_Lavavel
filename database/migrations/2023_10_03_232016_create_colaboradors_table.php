@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('setor', function (Blueprint $table) {
+        Schema::disableForeignKeyConstraints();
+        
+        Schema::create('colaborador', function (Blueprint $table) {
             $table->id();
             $table->string('nome',100);
-            $table->string('codigo',20);
-            $table->string('atribuicoes',200); 
+            $table->string('funcao',50);
+            $table->foreignId('setor_id')->nullable()
+            ->constrained('setor')->default(null)->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('setor');
+        Schema::dropIfExists('colaborador');
     }
 };

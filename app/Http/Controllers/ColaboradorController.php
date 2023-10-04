@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Colaborador;
+use App\Models\Setor;
 use Illuminate\Http\Request;
-use App\Models\Plano;
 
-class PlanoController extends Controller
+class ColaboradorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $planos = Plano::all();
+        $colaboradores = Colaborador::all();
 
-        return view('plano.list')->with(['planos'=> $planos]);
+        return view('colaborador.list')->with(['colaboradores'=> $colaboradores]);
     }
 
     /**
@@ -22,7 +23,9 @@ class PlanoController extends Controller
      */
     public function create()
     {
-        return view('plano.form');
+        $setores = Setor::orderBy('nome')->get();
+
+        return view('colaborador.form')->with(['setores'=> $setores]);
     }
 
     /**
@@ -38,15 +41,13 @@ class PlanoController extends Controller
         ]); */
 
         $dados = ['nome'=>$request->nome,
-            'tipo'=>$request->tipo,
-            'upload'=>$request->upload,
-            'download'=>$request->download,
-            'valor'=>$request->valor,
+            'funcao'=>$request->funcao,
+            'setor_id'=>$request->setor_id,
         ]; 
 
-        Plano::create($dados);
+        Colaborador::create($dados);
 
-        return redirect('plano')->with('success', "Cadastrado com sucesso!");
+        return redirect('colaborador')->with('success', "Cadastrado com sucesso!");
     }
 
     /**
@@ -62,10 +63,13 @@ class PlanoController extends Controller
      */
     public function edit(string $id)
     {
-        $plano = Plano::find($id); //select * from plano where id = $id
+        $colaborador = Colaborador::find($id); // select * from colaborador where id = $id
 
-        return view('plano.form')->with([
-            'plano'=> $plano,]);
+        $setores = Setor::orderBy('nome')->get();
+
+        return view('colaborador.form')->with([
+        'colaborador'=> $colaborador,
+        'setores'=> $setores]);
     }
 
     /**
@@ -81,17 +85,15 @@ class PlanoController extends Controller
         ]); */
 
         $dados = ['nome'=>$request->nome,
-            'tipo'=>$request->tipo,
-            'upload'=>$request->upload,
-            'download'=>$request->download,
-            'valor'=>$request->valor,
+            'funcao'=>$request->funcao,
+            'setor_id'=>$request->setor_id,
         ]; 
 
-        Plano::UpdateOrCreate(
+        Colaborador::UpdateOrCreate(
             ['id'=>$request->id],
             $dados);
 
-        return redirect('plano')->with('success', "Atualizado com sucesso!");
+        return redirect('colaborador')->with('success', "Atualizado com sucesso!");
     }
 
     /**
@@ -99,11 +101,11 @@ class PlanoController extends Controller
      */
     public function destroy($id)
     {
-        $plano = Plano::findOrFail($id);
+        $colaborador = Colaborador::findOrFail($id);
 
-        $plano->delete();
+        $colaborador->delete();
 
-        return redirect('plano')->with('success', "Deletado com sucesso!");
+        return redirect('colaborador')->with('success', "Deletado com sucesso!");
     }
 
     /**
@@ -112,10 +114,10 @@ class PlanoController extends Controller
     public function search(Request $request)
     {
         if(!empty($request->valor)){
-            $planos = Plano::where($request->tipo, 'like', "%". $request->valor."%")->get();
+            $colaboradores = Colaborador::where($request->tipo, 'like', "%". $request->valor."%")->get();
         } else {
-            $planos = Plano::all();
+            $colaboradores = Colaborador::all();
         }
-        return view('plano.list')->with(['planos'=> $planos]);
+        return view('colaborador.list')->with(['colaboradores'=> $colaboradores]);
     }
 }
